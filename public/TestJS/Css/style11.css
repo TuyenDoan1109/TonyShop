@@ -1,0 +1,13 @@
+.blue-background-class {
+    background: #007bff;
+}
+
+.handle {
+    cursor: move;
+}
+
+.selected {
+    background-color: #f9c7c8 !important;
+    border: solid red 1px !important;
+    z-index: 1 !important;
+}
