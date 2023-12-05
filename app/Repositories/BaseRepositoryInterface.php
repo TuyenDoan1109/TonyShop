@@ -12,7 +12,7 @@ interface BaseRepositoryInterface
     public function create($attributes);
     public function createMany($arrData);
     public function update($id, $attributes);
-    public function delete($id);
+    public function delete($instance);
     public function deleteMany($ids);
     public function deleteForever($id);
     public function restoreDeleted($id);

@@ -45,22 +45,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function info() {
-        return $this->hasOne(UserInfo::class);
-    }
-
-    // get active user
-//    public function scopeActive($query) {
-//        return $query->where('status', '1');
-//    }
     public function scopeActive($query) {
         return $query->where('status', UserStatusEnum::ACTIVE->value);
     }
 
-    // get inactive user
-//    public function scopeInactive($query) {
-//        return $query->where('status', '0');
-//    }
     public function scopeInactive($query) {
         return $query->where('status', UserStatusEnum::INACTIVE->value);
     }

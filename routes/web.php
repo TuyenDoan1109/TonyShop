@@ -246,6 +246,24 @@ Route::namespace('Auth')->group(function () {
     Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 });
 
+// Contact
+Route::get('/contact', [App\Http\Controllers\PageController::class, 'showContact'])->name('contact');
+
+// Products
+Route::get('/products', [App\Http\Controllers\PageController::class, 'indexProduct'])->name('products.index');
+
+// Product Detail
+Route::get('/product-detail', [App\Http\Controllers\PageController::class, 'productDetail'])->name('product-detail');
+
+// Wishlist
+Route::get('/wishlists', [App\Http\Controllers\PageController::class, 'indexWishlist'])->name('wishlists.index');
+
+// Cart
+Route::get('/carts', [App\Http\Controllers\PageController::class, 'indexCart'])->name('carts.index');
+
+// Checkout
+Route::get('/checkouts', [App\Http\Controllers\PageController::class, 'indexCheckout'])->name('checkouts.index');
+
 // https://unisharp.github.io/laravel-filemanager/installation(REVIEW AGAIN)
 //Route::group(['prefix' => 'filemanager', 'middleware' => ['web', 'auth']], function () {
 //    \UniSharp\LaravelFilemanager\Lfm::routes();

@@ -19,14 +19,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('avatar_name')->nullable();
+            $table->string('avatar_path')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->integer('status')->default(1);
-
-            // test
-            $table->integer('type')->default(1);  // type = 1 normal user; type = 2 super user
-            // end test
-
             $table->softDeletes();    // add soft delete
             $table->timestamps();
         });

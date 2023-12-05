@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
-@section('content')
+@section('title')
+    <title>TonyShop | Contact</title>
+@endsection
 
-@include('layouts.breadcrumb')
+@section('content')
 
 <!-- Contact Start -->
 <div class="container-fluid">

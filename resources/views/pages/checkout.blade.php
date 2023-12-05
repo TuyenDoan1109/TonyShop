@@ -1,111 +1,206 @@
 @extends('layouts.app')
 
+@section('title')
+    <title>TonyShop | Checkout</title>
+@endsection
+
 @section('content')
 
-<!-- Cart Start -->
-<form action="{{route('checkout.payment')}}" method="post">
-    @csrf
+    <!-- Breadcrumb Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
-            <div class="col-lg-8 table-responsive mb-5">
-                <table class="table table-light table-borderless table-hover text-center mb-0">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Sản phẩm</th>
-                            <th>Giá</th>
-                            <th>Mầu sắc</th>
-                            <th>Thông số</th>
-                            <th>Số lượng</th>
-                            <th>Tổng</th>
-                        </tr>
-                    </thead>
-                    <tbody class="align-middle">
-                        @foreach($contents as $content)
-                            <tr>
-                                <td class="align-middle"><img class="mr-2" src="{{asset('storage/backend/img/' . $content->options->image)}}" alt="" style="width: 50px;">{{$content->name}}</td>
-                                <td class="align-middle">{{number_format($content->price)}} VNĐ</td>
-                                <td class="align-middle">{{$content->options->color}}</td>
-                                <td class="align-middle">{{$content->options->size}}</td>
-                                <td class="align-middle">{{$content->qty}}</td>
-                                <td class="align-middle">{{number_format($content->price * $content->qty)}} VNĐ</td>
-                            </tr>
-                        @endforeach
-                        <tr>
-                            <td class="align-middle">Tổng cần thanh toán: {{number_format(Cart::total() + $shipping_fee)}} VNĐ</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                {{-- Payment Methods --}}
-                <h5 class="section-title position-relative text-uppercase mt-5 mb-3"><span class="bg-secondary pr-3">Chọn phương thức thanh toán</span></h5>
-                <div class="form-group">
-                    @foreach($payment_methods as $payment_method)
-                        <div class="form-check-inline">
-                            <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="payment_method_id" value="{{$payment_method->id}}">{{$payment_method->name}}
-                            </label>
-                        </div>
-                    @endforeach
-                    <div class="text-danger">@error('payment_method_id') {{$message}} @enderror</div>
-                </div>
-
-            </div>
-            <div class="col-lg-4">
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Thông tin vận chuyển</span></h5>
-                @guest
-                    <div class="form-group">
-                        <label for="shipping_name">Họ và tên người nhận:</label>
-                        <input class="form-control" type="text" id="name" name="shipping_name" placeholder="Họ và tên người nhận..." value="{{old('shipping_name')}}">
-                        <span class="text-danger">@error('shipping_name') {{$message}} @enderror</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="shipping_email">Địa chỉ email người nhận:</label>
-                        <input class="form-control" type="text" id="email" name="shipping_email" placeholder="Địa chỉ email người nhận..." value="{{old('shipping_email')}}">
-                        <span class="text-danger">@error('shipping_email') {{$message}} @enderror</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="shipping_phone">Số điện thoại người nhận:</label>
-                        <input class="form-control" type="text" id="phone" name="shipping_phone" placeholder="Số điện thoại người nhận..." value="{{old('shipping_phone')}}">
-                        <span class="text-danger">@error('shipping_phone') {{$message}} @enderror</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="shipping_address">Địa chỉ người nhận:</label>
-                        <input class="form-control" type="text" id="address" name="shipping_address" placeholder="Địa chỉ người nhận..." value="{{old('shipping_address')}}">
-                        <span class="text-danger">@error('shipping_address') {{$message}} @enderror</span>
-                    </div>
-                @else
-                    <div class="form-group">
-                        <label for="shipping_name">Họ và tên người nhận:</label>
-                        <input class="form-control" type="text" id="name" name="shipping_name" placeholder="Họ và tên người nhận..." value="{{Auth::user()->name}}">
-                        <span class="text-danger">@error('shipping_name') {{$message}} @enderror</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="shipping_email">Địa chỉ email người nhận:</label>
-                        <input class="form-control" type="text" id="email" name="shipping_email" placeholder="Địa chỉ email người nhận..." value="{{Auth::user()->email}}">
-                        <span class="text-danger">@error('shipping_email') {{$message}} @enderror</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="shipping_phone">Số điện thoại người nhận:</label>
-                        <input class="form-control" type="text" id="phone" name="shipping_phone" placeholder="Số điện thoại người nhận..." value="{{Auth::user()->phone}}">
-                        <span class="text-danger">@error('shipping_phone') {{$message}} @enderror</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="shipping_address">Địa chỉ người nhận:</label>
-                        <input class="form-control" type="text" id="address" name="shipping_address" placeholder="Địa chỉ người nhận..." value="{{Auth::user()->address}}">
-                        <span class="text-danger">@error('shipping_address') {{$message}} @enderror</span>
-                    </div>
-                @endguest
-
-                <div class="form-group">
-                    <label for="shipping_note">Ghi chú:</label>
-                    <textarea class="form-control" type="textarea" id="note" name="shipping_note" placeholder="Ghi chú...">{{old('shipping_note')}}</textarea>
-                    <span class="text-danger">@error('shipping_note') {{$message}} @enderror</span>
-                </div>
-                <button class="btn btn-primary btn-block" type="submit">Mua hàng</button>
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="#">Home</a>
+                    <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                    <span class="breadcrumb-item active">Checkout</span>
+                </nav>
             </div>
         </div>
     </div>
-</form>
-<!-- Cart End -->
+    <!-- Breadcrumb End -->
+
+    <!-- Checkout Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-lg-8">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Billing Address</span></h5>
+                <div class="bg-light p-30 mb-5">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>First Name</label>
+                            <input class="form-control" type="text" placeholder="John">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Last Name</label>
+                            <input class="form-control" type="text" placeholder="Doe">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>E-mail</label>
+                            <input class="form-control" type="text" placeholder="example@email.com">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Mobile No</label>
+                            <input class="form-control" type="text" placeholder="+123 456 789">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Address Line 1</label>
+                            <input class="form-control" type="text" placeholder="123 Street">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Address Line 2</label>
+                            <input class="form-control" type="text" placeholder="123 Street">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Country</label>
+                            <select class="custom-select">
+                                <option selected>United States</option>
+                                <option>Afghanistan</option>
+                                <option>Albania</option>
+                                <option>Algeria</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>City</label>
+                            <input class="form-control" type="text" placeholder="New York">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>State</label>
+                            <input class="form-control" type="text" placeholder="New York">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>ZIP Code</label>
+                            <input class="form-control" type="text" placeholder="123">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="newaccount">
+                                <label class="custom-control-label" for="newaccount">Create an account</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="shipto">
+                                <label class="custom-control-label" for="shipto"  data-toggle="collapse" data-target="#shipping-address">Ship to different address</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapse mb-5" id="shipping-address">
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Shipping Address</span></h5>
+                    <div class="bg-light p-30">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>First Name</label>
+                                <input class="form-control" type="text" placeholder="John">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Last Name</label>
+                                <input class="form-control" type="text" placeholder="Doe">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>E-mail</label>
+                                <input class="form-control" type="text" placeholder="example@email.com">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Mobile No</label>
+                                <input class="form-control" type="text" placeholder="+123 456 789">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Address Line 1</label>
+                                <input class="form-control" type="text" placeholder="123 Street">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Address Line 2</label>
+                                <input class="form-control" type="text" placeholder="123 Street">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Country</label>
+                                <select class="custom-select">
+                                    <option selected>United States</option>
+                                    <option>Afghanistan</option>
+                                    <option>Albania</option>
+                                    <option>Algeria</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>City</label>
+                                <input class="form-control" type="text" placeholder="New York">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>State</label>
+                                <input class="form-control" type="text" placeholder="New York">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>ZIP Code</label>
+                                <input class="form-control" type="text" placeholder="123">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Order Total</span></h5>
+                <div class="bg-light p-30 mb-5">
+                    <div class="border-bottom">
+                        <h6 class="mb-3">Products</h6>
+                        <div class="d-flex justify-content-between">
+                            <p>Product Name 1</p>
+                            <p>$150</p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <p>Product Name 2</p>
+                            <p>$150</p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <p>Product Name 3</p>
+                            <p>$150</p>
+                        </div>
+                    </div>
+                    <div class="border-bottom pt-3 pb-2">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h6>Subtotal</h6>
+                            <h6>$150</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Shipping</h6>
+                            <h6 class="font-weight-medium">$10</h6>
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5>Total</h5>
+                            <h5>$160</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Payment</span></h5>
+                    <div class="bg-light p-30">
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="payment" id="paypal">
+                                <label class="custom-control-label" for="paypal">Paypal</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="payment" id="directcheck">
+                                <label class="custom-control-label" for="directcheck">Direct Check</label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="payment" id="banktransfer">
+                                <label class="custom-control-label" for="banktransfer">Bank Transfer</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Checkout End -->
 
 @endsection

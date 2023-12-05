@@ -1,84 +1,100 @@
 @extends('layouts.app')
 
+@section('title')
+    <title>TonyShop | Cart</title>
+@endsection
+
 @section('content')
 
-{{--@include('layouts.breadcrumb')--}}
-
-<!-- Cart Start -->
-<div id="table" class="container-fluid">
-    @if(count($contents) > 0)
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
         <div class="row px-xl-5">
-            <div class="col table-responsive mb-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="#">Home</a>
+                    <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                    <span class="breadcrumb-item active">Shopping Cart</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Cart Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-lg-8 table-responsive mb-5">
                 <table class="table table-light table-borderless table-hover text-center mb-0">
                     <thead class="thead-dark">
                         <tr>
-                            <th>Sản phẩm</th>
-                            <th style="width:9rem">Giá</th>
-                            <th style="width:9rem">Mầu sắc</th>
-                            <th style="width:9rem">Thông số</th>
-                            <th style="width:9rem">Số lượng</th>
-                            <th style="width:10rem">Tổng tiền</th>
-                            <th style="width:9rem"></th>
+                            <th>Products</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Remove</th>
                         </tr>
                     </thead>
                     <tbody class="align-middle">
-                        @foreach($contents as $content)
-                            <tr data-id="{{ $content->rowId }}">
+
+                        @for($i = 1; $i <= 5; $i++)
+                            <tr>
+                                <td class="align-middle"><img src="{{ asset('frontend/img/product-'.$i.'.jpg') }}" alt="" style="width: 50px;"> Product Name</td>
+                                <td class="align-middle">$150</td>
                                 <td class="align-middle">
-                                    <a style="color: #6C757D; text-decoration: none;" href="{{route('product.detail', $content->id)}}">
-                                        <img class="mr-2" src="{{asset('storage/backend/img/' . $content->options->image)}}" alt="" style="width: 50px;">{{$content->name}}
-                                    </a>
+                                    <div class="input-group quantity mx-auto" style="width: 100px;">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-primary btn-minus" >
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                        <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="1">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-primary btn-plus">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="align-middle price">{{number_format($content->price)}} VNĐ</td>
-                                <td class="align-middle">{{$content->options->color}}</td>
-                                <td class="align-middle">{{$content->options->size}}</td>
-                                <td class="align-middle">
-                                    <input type="number" min="1" value="{{$content->qty}}" class="form-control qty" />
-                                </td>
-                                <td class="align-middle total">{{number_format($content->price * $content->qty)}} VNĐ</td>
-                                <td class="align-middle"><a class="btn btn-sm btn-danger removeCartItem"><i class="fa fa-times"></i></a></td>
+                                <td class="align-middle">$150</td>
+                                <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
                             </tr>
-                        @endforeach
+                        @endfor
+
                     </tbody>
                 </table>
             </div>
-        </div>
-
-        <div class="row px-xl-5 d-flex justify-content-end">
             <div class="col-lg-4">
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Giỏ hàng</span></h5>
+                <form class="mb-30" action="">
+                    <div class="input-group">
+                        <input type="text" class="form-control border-0 p-4" placeholder="Coupon Code">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary">Apply Coupon</button>
+                        </div>
+                    </div>
+                </form>
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Cart Summary</span></h5>
                 <div class="bg-light p-30 mb-5">
                     <div class="border-bottom pb-2">
                         <div class="d-flex justify-content-between mb-3">
-                            <h6>Tổng</h6>
-                            <h6 id="initial">{{number_format(Cart::initial())}} VNĐ</h6>
-                        </div>
-
-                        <div class="d-flex justify-content-between mb-3">
-                            <h6 class="font-weight-medium">Phí ship</h6>
-                            <h6 id="shipping-fee" class="font-weight-medium" value="{{$shipping_fee}}">+{{number_format($shipping_fee)}} VNĐ</h6>
+                            <h6>Subtotal</h6>
+                            <h6>$150</h6>
                         </div>
                         <div class="d-flex justify-content-between">
-
-                            <h6 class="font-weight-medium">VAT<small>({{(Cart::tax() / Cart::initial()) * 100}} %)</small></h6>
-
-                            <h6 id="tax" class="font-weight-medium">+{{number_format(Cart::tax())}} VNĐ</h6>
+                            <h6 class="font-weight-medium">Shipping</h6>
+                            <h6 class="font-weight-medium">$10</h6>
                         </div>
                     </div>
                     <div class="pt-2">
                         <div class="d-flex justify-content-between mt-2">
-                            <h5>Thanh toán</h5>
-                            <h5 id="total">{{number_format(Cart::total() + $shipping_fee)}} VNĐ</h5>
+                            <h5>Total</h5>
+                            <h5>$160</h5>
                         </div>
-                        <a href="{{route('checkout')}}" class="btn btn-block btn-primary font-weight-bold my-3 py-3">Tiếp tục thanh toán</a>
+                        <button class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed To Checkout</button>
                     </div>
                 </div>
             </div>
         </div>
-    @else
-        <p class="text-center">Giỏ hàng bạn rỗng!</p >
-    @endif
-</div>
-<!-- Cart End -->
+    </div>
+    <!-- Cart End -->
 
 @endsection

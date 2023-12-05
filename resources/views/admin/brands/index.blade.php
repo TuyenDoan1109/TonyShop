@@ -5,6 +5,13 @@
 @endsection
 
 @section('content')
+    <style>
+        .brand-image-150-100{
+            width: 100px;
+            /*height: 100px;*/
+            object-fit: cover;
+        }
+    </style>
 
 {{--Start Table--}}
 <div class="row">
@@ -71,7 +78,7 @@
                                         <td class="text-center px-3" scope="row">{{ $index++ }}</td>
                                         <td class="text-center px-3" style="white-space: nowrap;">{{$item->name}}</td>
                                         <td class="text-center px-3">
-                                            Ảnh
+                                            <img class="brand-image-150-100" src="{{ asset($item->image_path) }}" alt="">
                                         </td>
                                         <td class="text-center px-3">
                                             <div class="d-flex justify-content-center px-2">

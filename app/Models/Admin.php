@@ -49,15 +49,6 @@ class Admin extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // One to One Relationship
-//    public function info() {
-//        return $this->hasOne('App\Models\AdminInfo');
-//    }
-
-    public function info() {
-        return $this->hasOne('App\Models\AdminInfo', 'admin_id', 'id');
-    }
-
     public function posts() {
         return $this->hasMany('App\Models\Post');
     }

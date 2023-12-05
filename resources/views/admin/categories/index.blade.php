@@ -62,6 +62,7 @@
                                     <th class="text-center px-3" scope="col">STT</th>
                                     <th class="text-center px-3" scope="col">Tên danh mục</th>
                                     <th class="text-center px-3" scope="col">Danh mục cha</th>
+                                    <th class="text-center px-3" scope="col">Thể loại</th>
                                     <th class="text-center px-3" scope="col"></th>
                                 </tr>
                             </thead>
@@ -77,6 +78,7 @@
                                         <td class="text-center px-3" style="white-space: nowrap;">
                                             {{ $item->ParentCategory->name ?? '' }}
                                         </td>
+
                                         <td class="text-center px-3">
                                             <div class="d-flex justify-content-center px-2">
                                                 <a href="{{route('admin.categories.edit', $item->id)}}" class="btn btn-sm btn-outline-primary" title="Sửa" style="margin-right: 5px">

@@ -25,7 +25,6 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => '$2y$10$mHArcO4i/wq0tNhaDCtTS.moH8xe2bCfPViKu9xJi8HDlYgBVGrwW',   // pas: 12345678
                 'remember_token' => Str::random(10),
-                'type' => 1,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -35,7 +34,6 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => '$2y$10$mHArcO4i/wq0tNhaDCtTS.moH8xe2bCfPViKu9xJi8HDlYgBVGrwW',   // pas: 12345678
                 'remember_token' => Str::random(10),
-                'type' => 2,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -52,7 +50,6 @@ class UserSeeder extends Seeder
                         'password' => Hash::make('12345678'),
                         'remember_token' => Str::random(10),
                         'status' => 0,
-                        'type' => 1,
                         'created_at' => now(),
                         'updated_at' => now()
                     ]
@@ -66,7 +63,6 @@ class UserSeeder extends Seeder
                         'password' => Hash::make('12345678'),
                         'remember_token' => Str::random(10),
                         'status' => 1,
-                        'type' => 2,
                         'created_at' => now(),
                         'updated_at' => now()
                     ]

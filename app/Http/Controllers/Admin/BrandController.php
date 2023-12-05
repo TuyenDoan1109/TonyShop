@@ -7,9 +7,11 @@ use App\Http\Requests\Brand\CreateBrandRequest;
 use App\Http\Requests\Brand\UpdateBrandRequest;
 use App\Repositories\Brand\BrandRepositoryInterface;
 use Illuminate\Http\Request;
+use App\Traits\StorageImageTrait;
 
 class BrandController extends Controller
 {
+    use StorageImageTrait;
     protected $brandRepository;
     public function __construct(BrandRepositoryInterface $brandRepository) {
         $this->middleware('auth:admin');
@@ -44,9 +46,21 @@ class BrandController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateBrandRequest $request)
+    public function store(Request $request)   // CreateBrandRequest
     {
-        $brand = $this->brandRepository->create($request->all());
+        $dataCreateBrand = [
+            'name' => $request->name
+        ];
+
+        // upload image
+        $imageUpload = $this->UploadImageTrait($request,'image', 'brand');
+        if(!empty($imageUpload)) {
+            $dataCreateBrand['image_name'] = $imageUpload['fileName'];
+            $dataCreateBrand['image_path'] = $imageUpload['filePath'];
+        }
+
+        $brand = $this->brandRepository->create($dataCreateBrand);
+
         if($brand) {
             return redirect(route('admin.brands.index'))->with('alert-success', 'Thêm mới thành công');
         } else {
@@ -84,9 +98,25 @@ class BrandController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBrandRequest $request, $id)
+    public function update(Request $request, $id)  // UpdateBrandRequest
     {
-        $brand = $this->brandRepository->update($id, $request->all());
+        $oldBrand = $this->brandRepository->getById($id);
+        $dataUpdateBrand = [
+            'name' => $request->name
+        ];
+
+        // upload image
+        $imageUpload = $this->UploadImageTrait($request,'image', 'brand');
+        if(!empty($imageUpload)) {
+            $dataUpdateBrand['image_name'] = $imageUpload['fileName'];
+            $dataUpdateBrand['image_path'] = $imageUpload['filePath'];
+
+            // Delete Old Image
+            $this->DeleteImageTrait($oldBrand->image_path);
+        }
+
+        $brand = $this->brandRepository->update($oldBrand, $dataUpdateBrand);
+
         if($brand) {
             return redirect(route('admin.brands.index'))->with('alert-success', 'Update thành công');
         } else {
@@ -102,15 +132,18 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
-        // check this brand have any depent product
-
-
-
-        $brand = $this->brandRepository->delete($id);
+        $brand = $this->brandRepository->getById($id);
         if($brand) {
-            return redirect(route('admin.brands.index'))->with('alert-success', 'Delete thành công');
-        } else {
-            return redirect()->back()->with('alert-error', 'Delete thất bại');
+            // Delete Image
+            $this->DeleteImageTrait($brand->image_path);
+
+            $result = $this->brandRepository->delete($brand);
+            if($result) {
+                return redirect(route('admin.brands.index'))->with('alert-success', 'Delete thành công');
+            } else {
+                return redirect()->back()->with('alert-error', 'Delete thất bại');
+            }
         }
+        return redirect()->back()->with('alert-error', 'Delete thất bại');
     }
 }

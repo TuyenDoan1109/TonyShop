@@ -10,18 +10,15 @@ trait StorageImageTrait
     public function UploadImageTrait($request, $fieldName, $folderName)
     {
         if($request->hasFile($fieldName)) {
-            $file = $request->feature_image;
+            $file = request($fieldName);
             $fileNameWithExt = $file->getClientOriginalName();
             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $ext = $file->getClientOriginalExtension();
-            $fileNameHash = $fileName . '_feature_image_' . time() . '.' . $ext;
-            //        dd($fileNameHash);
-//            $filePath = $request->file($fieldName)->storeAs('public/' . $folderName . '/' . auth('admin')->id(), $fileNameHash);
+            $fileNameHash = $fileName . '_' . $fieldName . '_' . time() . '.' . $ext;
             $filePath = $request->file($fieldName)->storeAs('public/backend/images/' . $folderName, $fileNameHash);
             $data = [
                 'fileName' => $fileNameWithExt,
                 'filePath' => Storage::url($filePath)
-//                'filePath' => $filePath
             ];
             return $data;
         }
@@ -36,13 +33,11 @@ trait StorageImageTrait
                 $fileNameWithExt = $item->getClientOriginalName();
                 $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
                 $ext = $item->getClientOriginalExtension();
-                $fileNameHash = $fileName . '_detail_image_' . time() . '.' . $ext;
-//                $filePath = $item->storeAs('public/' . $folderName . '/' . auth('admin')->id(), $fileNameHash);
+                $fileNameHash = $fileName . '_'. $fieldName .'_' . time() . '.' . $ext;
                 $filePath = $item->storeAs('public/backend/images/' . $folderName, $fileNameHash);
                 $data = [
                     'fileName' => $fileNameWithExt,
                     'filePath' => Storage::url($filePath)
-//                    'filePath' => $filePath
                 ];
                 $dataUpload[] = $data;
             }

@@ -25,7 +25,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
     public function getAllWithPaginate($limit, $with = [])
     {
-//        $this->model->orderBy('id', 'desc')->paginate($limit);
         return $this->model::query()
             ->when(!empty($with), function($q) use ($with){
                 $q->with($with);
@@ -70,12 +69,17 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
     }
 
-    public function delete($id) {
-        $result = $this->getById($id);
-        if($result) {
-            return $result->delete();
+    public function delete($instance) {
+        try {
+            $result = $instance->delete();
+            if($result > 0) {
+                return true;
+            }
+            return false;
+        } catch (\Exception $exception) {
+            Log::error('Message: ' . $exception->getMessage() . ' - Line: ' . $exception->getLine());
+            return false;
         }
-        return false;
     }
 
     public function deleteMany($ids)

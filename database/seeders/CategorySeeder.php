@@ -20,124 +20,111 @@ class CategorySeeder extends Seeder
             // ======== Category Level 1 =========
             [
                 // 'id' => 1,
-                'name' => "Category 1",
+                'name' => "Điện thoại",
                 'parent_id' => 0,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
                 // 'id' => 2,
-                'name' => "Category 2",
+                'name' => "Laptop",
                 'parent_id' => 0,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
                 // 'id' => 3,
-                'name' => "Category 3",
+                'name' => "Tablet",
                 'parent_id' => 0,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
-            // ======== END Category Level 1 =========
-
-
-            // ======== Category Level 2 =========
-            // Parent Category 1
             [
                 // 'id' => 4,
-                'name' => "Category 1.1",
-                'parent_id' => 1,
+                'name' => "Màn hình",
+                'parent_id' => 0,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
                 // 'id' => 5,
-                'name' => "Category 1.2",
-                'parent_id' => 1,
+                'name' => "Smart TV",
+                'parent_id' => 0,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
                 // 'id' => 6,
-                'name' => "Category 1.3",
-                'parent_id' => 1,
+                'name' => "Đồng hồ",
+                'parent_id' => 0,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
-
-            // Parent Category 2
             [
                 // 'id' => 7,
-                'name' => "Category 2.1",
-                'parent_id' => 2,
+                'name' => "Âm thanh",
+                'parent_id' => 0,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
                 // 'id' => 8,
-                'name' => "Category 2.2",
-                'parent_id' => 2,
+                'name' => "Smart home",
+                'parent_id' => 0,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
                 // 'id' => 9,
-                'name' => "Category 2.3",
-                'parent_id' => 2,
+                'name' => "Phụ kiện",
+                'parent_id' => 0,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                // 'id' => ,
+                'name' => "Đồ chơi CN",
+                'parent_id' => 0,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                // 'id' => ,
+                'name' => "Máy trôi",
+                'parent_id' => 0,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                // 'id' => ,
+                'name' => "Sửa chữa",
+                'parent_id' => 0,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                // 'id' => ,
+                'name' => "Dịch vụ",
+                'parent_id' => 0,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                // 'id' => ,
+                'name' => "Tin hot",
+                'parent_id' => 0,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                // 'id' => ,
+                'name' => "Ưu đãi",
+                'parent_id' => 0,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
 
-            // Parent Category 3
-            [
-                // 'id' => 10,
-                'name' => "Category 3.1",
-                'parent_id' => 3,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                // 'id' => 11,
-                'name' => "Category 3.2",
-                'parent_id' => 3,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                // 'id' => 12,
-                'name' => "Category 3.3",
-                'parent_id' => 3,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            // ======== END Category Level 2 =========
-
-
-            // ======== Category Level 3 =========
-            // Parent Category 1.1
-            [
-                // 'id' => 13,
-                'name' => "Category 1.1.1",
-                'parent_id' => 4,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                // 'id' => 14,
-                'name' => "Category 1.1.2",
-                'parent_id' => 4,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                // 'id' => 15,
-                'name' => "Category 1.1.3",
-                'parent_id' => 4,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            // ======== END Category Level 3 =========
+            // ======== END Category Level 1 =========
         ]);
 
     }

@@ -15,8 +15,8 @@
 
                 <div class="card-body">
                     <div class="row">
-                        <div class="col">
-                            <form action="{{route('admin.brands.store')}}" method="post">
+                        <div class="col-6">
+                            <form action="{{route('admin.brands.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
                                     <label for="cc-payment" class="control-label mb-1">Tên:</label>
@@ -24,6 +24,16 @@
                                     @if($errors->has('name'))
                                         <div class="bg-danger text-white text-center py-1">
                                             <span>{{$errors->first('name')}}</span>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="" class="control-label mb-1">Ảnh thương hiệu:</label>
+                                    <input name="image" type="file" class="form-control-file">
+                                    @if($errors->has('image'))
+                                        <div class="bg-danger text-white text-center py-1">
+                                            <span>{{$errors->first('image')}}</span>
                                         </div>
                                     @endif
                                 </div>

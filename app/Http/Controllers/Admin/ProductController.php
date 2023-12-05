@@ -273,20 +273,37 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        dd($id);
+        $product = $this->productRepository->getById($id);
+        if($product) {
+            // Delete feature image
+            if(!empty($product->feature_image_path)) {
+                $this->DeleteImageTrait($product->feature_image_path);
+            }
 
+            // Delete detail image
+            $detailImagePathArrayToDelete = [];
+            foreach ($product->images as $item) {
+                $detailImagePathArrayToDelete[] = $item->image_path;
+            }
+            if(!empty($detailImagePathArrayToDelete)) {
+                $this->DeleteMultipaleImageTrait($detailImagePathArrayToDelete);
+            }
 
+            $this->productImageRepository->deleteByProduct($product->id);
 
+            // Delete tags
+            $product->tags()->sync([]);
 
+            // Delete product
+            $result = $this->productRepository->delete($product);
 
-
-
-//        $product = $this->productRepository->delete($id);
-//        if($product) {
-//            return redirect(route('admin.products.index'))->with('alert-success', 'Delete thành công');
-//        } else {
-//            return redirect()->back()->with('alert-error', 'Delete thất bại');
-//        }
+            if($result) {
+                return redirect(route('admin.products.index'))->with('alert-success', 'Delete thành công');
+            } else {
+                return redirect()->back()->with('alert-error', 'Delete thất bại');
+            }
+        }
+        return redirect()->back()->with('alert-error', 'Delete thất bại');
     }
 
 }

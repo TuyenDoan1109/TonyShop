@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CreateCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Repositories\Category\CategoryRepositoryInterface;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -49,11 +50,30 @@ class CategoryController extends Controller
     {
         foreach ($categories as $item) {
             if($item['parent_id'] == $id) {
-                if($parent_id == $item->id) {
-                    $this->options = $this->options . "<option selected value=$item->id>$text" . $item['name'] . "</option>";
-                } else {
-                    $this->options = $this->options . "<option value=$item->id>$text" . $item['name'] . "</option>";
+
+                switch ($id) {
+                    case(0):
+                        if($parent_id == $item->id) {
+                            $this->options = $this->options . "<option class='font-weight-bold text-uppercase' selected value=$item->id>$text" . $item['name'] . "</option>";
+                        } else {
+                            $this->options = $this->options . "<option class='font-weight-bold text-uppercase' value=$item->id>$text" . $item['name'] . "</option>";
+                        }
+                        break;
+                    case(1):
+                        if($parent_id == $item->id) {
+                            $this->options = $this->options . "<option class='font-weight-bold' selected value=$item->id>$text" . $item['name'] . "</option>";
+                        } else {
+                            $this->options = $this->options . "<option class='font-weight-bold' value=$item->id>$text" . $item['name'] . "</option>";
+                        }
+                        break;
+                    default:
+                        if($parent_id == $item->id) {
+                            $this->options = $this->options . "<option selected value=$item->id>$text" . $item['name'] . "</option>";
+                        } else {
+                            $this->options = $this->options . "<option value=$item->id>$text" . $item['name'] . "</option>";
+                        }
                 }
+
                 $this->categoryRecursive($categories, $item['id'], $parent_id, $text . '--');
             }
         }
@@ -66,7 +86,7 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateCategoryRequest $request)
+    public function store(Request $request)  // CreateCategoryRequest
     {
         $category = $this->categoryRepository->create($request->all());
         if($category) {
@@ -128,16 +148,16 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        // check this category have any depentd category
-
-
-
-        $category = $this->categoryRepository->delete($id);
+        $category = $this->categoryRepository->getById($id);
         if($category) {
-            return redirect(route('admin.categories.index'))->with('alert-success', 'Delete thành công');
-        } else {
-            return redirect()->back()->with('alert-error', 'Delete thất bại');
+            $result = $this->categoryRepository->delete($category);
+            if($result) {
+                return redirect(route('admin.categories.index'))->with('alert-success', 'Delete thành công');
+            } else {
+                return redirect()->back()->with('alert-error', 'Delete thất bại');
+            }
         }
+        return redirect()->back()->with('alert-error', 'Delete thất bại');
     }
 
     public function forceDelete($id) {
